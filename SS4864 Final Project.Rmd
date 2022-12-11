@@ -1,0 +1,24 @@
+---
+title: "SS4864 Final Project"
+author: "Yangxuan Xu"
+date: "11/12/2022"
+output: pdf_document
+---
+
+```{r}
+library(usethis)
+
+# Initial commit to github
+use_git(message = "Initial commit. Dec.11")
+use_github(private = TRUE, protocol = "https")
+
+# License
+use_gpl3_license()
+
+# Create the functions
+use_r("estimation_functions.R")
+
+# Create vignette
+use_vignette("MyFunction")
+```
+
