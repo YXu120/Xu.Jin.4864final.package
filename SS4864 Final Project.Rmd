@@ -7,6 +7,7 @@ output: pdf_document
 
 ```{r}
 library(usethis)
+library(lme4)
 
 # Initial commit to github
 use_git(message = "Initial commit. Dec.11")
@@ -17,8 +18,14 @@ use_gpl3_license()
 
 # Create the functions
 use_r("estimation_functions.R")
+use_r("my_function_bootstrap.R")
 
 # Create vignette
-use_vignette("MyFunction")
+use_vignette("my_function_bootstrap")
+
+library(tidyr)
+library(readr)
+tortoise <- read_csv("gopher_tortoise.csv")
+run_model(tortoise, "tortoise")[[2]]
 ```
 
