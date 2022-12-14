@@ -23,9 +23,15 @@ use_r("my_function_bootstrap.R")
 # Create vignette
 use_vignette("my_function_bootstrap")
 
-library(tidyr)
+library(tidyverse)
 library(readr)
 tortoise <- read_csv("gopher_tortoise.csv")
-run_model(tortoise, "tortoise")[[2]]
+run_model(tortoise, "tortoise")[[4]][[2]]
+
+summary(glmer(shells~prev+offset(log(Area))+factor(year)+(1|Site),
+                   family=poisson,
+                   data=data))
+Y_btsp
+bootstrap$data[[2]]
 ```
 
