@@ -2,7 +2,7 @@
 #'
 #' @param data the data set for the example
 #' @param example the name of example, in our case we focus on "tortoise"
-#' @param B sample size of bootstrapping
+#' @param B sample size of bootstrap
 #'
 #' @return A list with summary statistics including point estimates of coefficients, standard errors, confidence intervals and p-value for hypothesis test.
 #' @export
@@ -22,10 +22,10 @@ para_boot <- function(data, example, B){
   n <- nrow(data)
 
   ## Obtain the results we will use after fitting the model from run_model function
-  beta_0 <- run_model(tortoise, "tortoise")[[1]][[1]]
-  beta_1 <- run_model(tortoise, "tortoise")[[1]][[2]]
-  year_factor <- c(0, run_model(tortoise, "tortoise")[[1]][[3]], run_model(tortoise, "tortoise")[[1]][[4]])
-  sigma <- sqrt(run_model(tortoise, "tortoise")[[2]])
+  beta_0 <- run_model(data, example)[[1]][[1]]
+  beta_1 <- run_model(data, example)[[1]][[2]]
+  year_factor <- c(0, run_model(data, example)[[1]][[3]], run_model(data, example)[[1]][[4]])
+  sigma <- sqrt(run_model(data, example)[[2]])
 
   ## The steps of parametric bootstrap are as follows:
   ## 1. Generate random effect Z* from N(0, sigma^2)
@@ -58,8 +58,8 @@ para_boot <- function(data, example, B){
   ## 4. Refit with the sampled (Y_1, ..., Y_B) to obtain estimated beta_1 and test statistics
   beta_btsp <- tibble(t = 1:B) %>%
     group_by(t) %>%
-    summarize(beta_1_star = run_model(Y_btsp$data[[t]], "tortoise")[[1]][[2]],
-              test_statistic = run_model(Y_btsp$data[[t]], "tortoise")[[4]][[2]])
+    summarize(beta_1_star = run_model(Y_btsp$data[[t]], example)[[1]][[2]],
+              test_statistic = run_model(Y_btsp$data[[t]], example)[[4]][[2]])
 
 
   ## Bootstrap standard deviation
