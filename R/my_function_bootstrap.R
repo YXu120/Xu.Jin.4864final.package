@@ -48,28 +48,39 @@ para_boot <- function(data, example, B){
   Y_btsp <- tibble(B = 1:B) %>%
     crossing(data) %>%
     group_by(B) %>%
-    summarize(shells = rpois(30, mu_hat[1:30,]), .groups = "drop") %>%
+    mutate(shells = rpois(30, mu_hat[1:30,]))
+
+  Y_btsp <- tibble(B = 1:B) %>%
+    crossing(data) %>%
+    mutate(shells = Y_btsp$shells) %>%
     nest_by(B)
 
-  ## 4. Refit with the sampled (Y_1, ..., Y_B) to approximate betas
-  beta_1_star <- array(data = NA, dim = B)
-  for(i in 1:B){
-    data$shells <- unlist(Y_btsp$data[[i]])
-    beta_1_star[i] <- run_model(data, "tortoise")[[1]][[2]]
-  }
+  ## 4. Refit with the sampled (Y_1, ..., Y_B) to obtain estimated beta_1 and test statistics
+  beta_btsp <- tibble(t = 1:B) %>%
+    group_by(t) %>%
+    summarize(beta_1_star = run_model(Y_btsp$data[[t]], "tortoise")[[1]][[2]],
+              test_statistic = run_model(Y_btsp$data[[t]], "tortoise")[[4]][[2]])
+
 
   ## Bootstrap standard deviation
-  beta_sd <- sd(beta_1_star)
+  beta_sd <- sd(beta_btsp$beta_1_star)
 
   ## Bootstrap 95% confidence interval
-  beta_ci <- quantile(beta_1_star,c(.025,.975))
+  beta_ci <- quantile(beta_btsp$beta_1_star,c(.025,.975))
 
-  ## Test statistics and p-values
-
+  ## P-value for hypothesis test, where H0: beta_1 = 0
+  p <- mean(abs(beta_btsp$beta_1_star) > abs(beta_btsp$test_statistic))
 
   ## Return values
-  list(point_estimation = beta_1,
+  # Summary statistics
+  list(point_estimation = beta_btsp$beta_1_star,
        standard_deviation = beta_sd,
        `95%_confidence_interval` = beta_ci,
-       p_value = test_stat)
+       p_value = p)
+
+  # Histogram of bootstrap sampled beta_1
+  hist(beta_btsp$beta_1_star,
+       breaks = 20,
+       main = "Histogram of sampled beta_1",
+       xlab = "beta_1")
 }
