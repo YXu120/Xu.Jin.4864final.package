@@ -22,10 +22,11 @@ para_boot <- function(data, example, B){
   n <- nrow(data)
 
   ## Obtain the results we will use after fitting the model from run_model function
-  beta_0 <- run_model(data, example)[[1]][[1]]
-  beta_1 <- run_model(data, example)[[1]][[2]]
-  year_factor <- c(0, run_model(data, example)[[1]][[3]], run_model(data, example)[[1]][[4]])
-  sigma <- sqrt(run_model(data, example)[[2]])
+  # suppressMessages is used to avoid the "isSingular" message
+  beta_0 <- suppressMessages(run_model(data, example))[[1]][[1]]
+  beta_1 <- suppressMessages(run_model(data, example))[[1]][[2]]
+  year_factor <- c(0, suppressMessages(run_model(data, example))[[1]][[3]], suppressMessages(run_model(data, example))[[1]][[4]])
+  sigma <- sqrt(suppressMessages(run_model(data, example))[[2]])
 
   ## The steps of parametric bootstrap are as follows:
   ## 1. Generate random effect Z* from N(0, sigma^2)
@@ -48,7 +49,7 @@ para_boot <- function(data, example, B){
   Y_btsp <- tibble(B = 1:B) %>%
     crossing(data) %>%
     group_by(B) %>%
-    mutate(shells = rpois(30, mu_hat[1:30,]))
+    mutate(shells = rpois(n, mu_hat[1:n,]))
 
   Y_btsp <- tibble(B = 1:B) %>%
     crossing(data) %>%
@@ -58,8 +59,8 @@ para_boot <- function(data, example, B){
   ## 4. Refit with the sampled (Y_1, ..., Y_B) to obtain estimated beta_1 and test statistics
   beta_btsp <- tibble(t = 1:B) %>%
     group_by(t) %>%
-    summarize(beta_1_star = run_model(Y_btsp$data[[t]], example)[[1]][[2]],
-              test_statistic = run_model(Y_btsp$data[[t]], example)[[4]][[2]])
+    summarize(beta_1_star = suppressMessages(run_model(Y_btsp$data[[t]], example))[[1]][[2]],
+              test_statistic = suppressMessages(run_model(Y_btsp$data[[t]], example))[[4]][[2]])
 
 
   ## Bootstrap standard deviation
