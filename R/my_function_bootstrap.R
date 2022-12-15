@@ -74,7 +74,8 @@ para_boot <- function(data, example, B){
 
   ## Return values
   # Summary statistics
-  list(point_estimation = beta_btsp$beta_1_star,
+  list(point_estimation = beta_1,
+       bootstrapped_samples = beta_btsp$beta_1_star,
        standard_deviation = beta_sd,
        `95% confidence interval` = beta_ci,
        p_value = p)

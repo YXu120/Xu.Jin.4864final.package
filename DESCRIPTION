@@ -12,3 +12,7 @@ RoxygenNote: 7.2.1
 URL: https://github.com/YXu120/Xu.Jin.4864final.package
 BugReports: https://github.com/YXu120/Xu.Jin.4864final.package/issues
 Imports: lmer, tidyverse
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

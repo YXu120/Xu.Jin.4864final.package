@@ -1,0 +1,19 @@
+---
+title: "my_function_bootstrap"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my_function_bootstrap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Xu.Jin.4864final.package)
+```
