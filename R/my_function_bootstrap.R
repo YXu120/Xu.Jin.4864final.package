@@ -30,7 +30,7 @@ para_boot <- function(data, example, B){
 
   ## The steps of parametric bootstrap are as follows:
   ## 1. Generate random effect Z* from N(0, sigma^2)
-  Z <- rnorm(n, mean = 0, sd = sigma)
+  Z <- rnorm(10, mean = 0, sd = sigma)
   Z <- rep(Z, each = 3)
 
   ## 2. Compute mu_hat = exp(beta_0 + log(x_area) + year_factor + beta_1 * x_prev + Z
@@ -76,7 +76,7 @@ para_boot <- function(data, example, B){
   # Summary statistics
   list(point_estimation = beta_btsp$beta_1_star,
        standard_deviation = beta_sd,
-       `95%_confidence_interval` = beta_ci,
+       `95% confidence interval` = beta_ci,
        p_value = p)
 
   # Histogram of bootstrap sampled beta_1
