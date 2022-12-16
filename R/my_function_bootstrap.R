@@ -62,7 +62,6 @@ para_boot <- function(data, example, B){
     summarize(beta_1_star = suppressMessages(run_model(Y_btsp$data[[t]], example))[[1]][[2]],
               test_statistic = suppressMessages(run_model(Y_btsp$data[[t]], example))[[4]][[2]])
 
-
   ## Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
 

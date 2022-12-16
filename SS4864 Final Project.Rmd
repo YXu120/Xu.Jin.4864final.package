@@ -29,6 +29,5 @@ tortoise <- read_csv("gopher_tortoise.csv")
 run_model(tortoise, "tortoise")
 
 para_boot(tortoise, "tortoise", 50)
-
 ```
 
