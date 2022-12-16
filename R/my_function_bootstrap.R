@@ -23,10 +23,11 @@ para_boot <- function(data, example, B){
 
   ## Obtain the results we will use after fitting the model from run_model function
   # suppressMessages is used to avoid the "isSingular" message
-  beta_0 <- suppressMessages(run_model(data, example))[[1]][[1]]
-  beta_1 <- suppressMessages(run_model(data, example))[[1]][[2]]
-  year_factor <- c(0, suppressMessages(run_model(data, example))[[1]][[3]], suppressMessages(run_model(data, example))[[1]][[4]])
-  sigma <- sqrt(suppressMessages(run_model(data, example))[[2]])
+  model_summary <- suppressMessages(run_model(data, example))
+  beta_0 <- model_summary[[1]][[1]]
+  beta_1 <- model_summary[[1]][[2]]
+  year_factor <- c(0, model_summary[[1]][[3]], model_summary[[1]][[4]])
+  sigma <- sqrt(model_summary[[2]])
 
   ## The steps of parametric bootstrap are as follows:
   ## 1. Generate random effect Z* from N(0, sigma^2)
@@ -72,16 +73,16 @@ para_boot <- function(data, example, B){
   p <- mean(abs(beta_btsp$beta_1_star) > abs(beta_btsp$test_statistic))
 
   ## Return values
+  # Histogram of bootstrap sampled beta_1
+  hist(beta_btsp$beta_1_star,
+       breaks = 20,
+       main = "Histogram of sampled beta_1",
+       xlab = "beta_1")
+
   # Summary statistics
   list(point_estimation = beta_1,
        bootstrapped_samples = beta_btsp$beta_1_star,
        standard_deviation = beta_sd,
        `95% confidence interval` = beta_ci,
        p_value = p)
-
-  # Histogram of bootstrap sampled beta_1
-  hist(beta_btsp$beta_1_star,
-       breaks = 20,
-       main = "Histogram of sampled beta_1",
-       xlab = "beta_1")
 }
