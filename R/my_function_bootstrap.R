@@ -60,8 +60,9 @@ para_boot <- function(data, example, B){
   ## 4. Refit with the sampled (Y_1, ..., Y_B) to obtain estimated beta_1 and test statistics
   beta_btsp <- tibble(t = 1:B) %>%
     group_by(t) %>%
-    summarize(beta_1_star = suppressMessages(run_model(Y_btsp$data[[t]], example))[[1]][[2]],
-              test_statistic = suppressMessages(run_model(Y_btsp$data[[t]], example))[[4]][[2]])
+    summarize(summary = suppressMessages(run_model(Y_btsp$data[[t]], example)),
+              beta_1_star = summary[[1]][[2]],
+              test_statistic = summary[[4]][[2]])
 
   ## Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
