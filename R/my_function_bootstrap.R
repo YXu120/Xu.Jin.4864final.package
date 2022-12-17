@@ -60,9 +60,9 @@ para_boot <- function(data, example, B){
   ## 4. Refit with the sampled (Y_1, ..., Y_B) to obtain estimated beta_1 and test statistics
   beta_btsp <- tibble(t = 1:B) %>%
     group_by(t) %>%
-    summarize(summary = suppressMessages(run_model(Y_btsp$data[[t]], example)),
-              beta_1_star = summary[[1]][[2]],
-              test_statistic = summary[[4]][[2]])
+    summarize(mod_sum = suppressMessages(run_model(Y_btsp$data[[t]], example)), .groups = "keep") %>%
+    summarize(beta_1_star = mod_sum[[1]][[2]],
+              test_statistic = mod_sum[[4]][[2]], .groups = "drop")
 
   ## Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
@@ -70,16 +70,13 @@ para_boot <- function(data, example, B){
   ## Bootstrap 95% confidence interval
   beta_ci <- quantile(beta_btsp$beta_1_star,c(.025,.975))
 
-  ## P-value for hypothesis test, where H0: beta_1 = 0
-  p <- mean(abs(beta_btsp$beta_1_star) > abs(beta_btsp$test_statistic))
+  ## P-value for hypothesis test, where H0: beta_1 = 0 and alpha = 0.05
+  p <- mean(qnorm(0.975) > abs(beta_btsp$test_statistic))
+  if (p == 0) {
+    p <- "<.001"
+  }
 
   ## Return values
-  # Histogram of bootstrap sampled beta_1
-  hist(beta_btsp$beta_1_star,
-       breaks = 20,
-       main = "Histogram of sampled beta_1",
-       xlab = "beta_1")
-
   # Summary statistics
   list(point_estimation = beta_1,
        bootstrapped_samples = beta_btsp$beta_1_star,

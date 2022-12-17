@@ -1,17 +1,17 @@
 Package: Xu.Jin.4864final.package
-Title: EM algorithm for poisson model, and bootstrap method to estimate accuracy
+Title: Bootstrap method to conduct statistical inference for Poisson model
 Version: 0.0.0.9000
 Authors@R: 
     person("Yangxuan", "Xu", "yxu827@uwo.ca", role = c("aut", "cre"),
            "Ruyi", "Jin", "rjin49@uwo.ca", role = c("aut"))
-Description: The package includes a function to fit the Poisson model to our data and a function to conduct bootstrap that can provide summary information including the point estimates, standard errors, and 95% confidence intervals for each parameter in the model.
+Description: The package includes a function to fit the Poisson model to our data and a function to conduct bootstrap that can provide summary information including the point estimates, standard errors, and 95% confidence intervals for the parameter of interest in the model.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 URL: https://github.com/YXu120/Xu.Jin.4864final.package
 BugReports: https://github.com/YXu120/Xu.Jin.4864final.package/issues
-Imports: lmer4, tidyverse
+Imports: lme4, tidyverse
 Suggests: 
     knitr,
     rmarkdown

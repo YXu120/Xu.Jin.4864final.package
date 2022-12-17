@@ -17,9 +17,15 @@ knitr::opts_chunk$set(
 ```{r setup}
 # Load packages
 library(Xu.Jin.4864final.package)
+<<<<<<< HEAD
 suppressMessages(library(dplyr))
 suppressMessages(library(ggplot2))
 suppressMessages(library(tidyverse))
+=======
+library(tidyverse)
+library(lme4)
+library(readr)
+>>>>>>> 6c87ed828e1c0bfb3f2f82cdef651f44d86fb7ff
 ```
 
 ```{r}
