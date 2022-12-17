@@ -77,12 +77,6 @@ para_boot <- function(data, example, B){
   }
 
   ## Return values
-  # Histogram of bootstrap sampled beta_1
-  hist(beta_btsp$beta_1_star,
-       breaks = 20,
-       main = "Histogram of sampled beta_1",
-       xlab = "beta_1")
-
   # Summary statistics
   list(point_estimation = beta_1,
        bootstrapped_samples = beta_btsp$beta_1_star,
