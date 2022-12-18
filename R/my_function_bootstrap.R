@@ -22,7 +22,7 @@ para_boot <- function(data, example, B){
   n <- nrow(data)
 
   ## Obtain the results we will use after fitting the model from run_model function
-  # suppressMessages is used to avoid the "isSingular" message
+  ## "suppressMessages" is used to avoid the "isSingular" message
   model_summary <- suppressMessages(run_model(data, example))
   beta_0 <- model_summary[[1]][[1]]
   beta_1 <- model_summary[[1]][[2]]
@@ -64,13 +64,13 @@ para_boot <- function(data, example, B){
     summarize(beta_1_star = mod_sum[[1]][[2]],
               test_statistic = mod_sum[[4]][[2]], .groups = "drop")
 
-  ## Bootstrap standard deviation
+  # Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
 
-  ## Bootstrap 95% confidence interval
+  # Bootstrap 95% confidence interval
   beta_ci <- quantile(beta_btsp$beta_1_star,c(.025,.975))
 
-  ## P-value for hypothesis test, where H0: beta_1 = 0 and alpha = 0.05
+  # P-value for hypothesis test, where H0: beta_1 = 0 and alpha = 0.05
   p <- mean(qnorm(0.975) > abs(beta_btsp$test_statistic))
   if (p == 0) {
     p <- "<.001"
