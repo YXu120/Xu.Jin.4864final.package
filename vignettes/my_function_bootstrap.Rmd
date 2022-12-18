@@ -113,7 +113,7 @@ tortoise2 %>%
 # Part2. Explanation of model fitting and bootstrap process
 
 ## 2.1 Fitting poisson model
-In this part, we use function provided by Dr. Simon Borner to fit a poisson model for this data set. We use number of shells as response variable, with predictors inclusing seroprevalance, area, year and random effect of site.
+In this part, we use function provided by Dr. Simon Bonner to fit a poisson model for this data set. We use number of shells as response variable, with predictors including seroprevalance, area, year and random effect bring by site.
 ```{r}
 suppressMessages(run_model(tortoise, "tortoise"))
 ```
