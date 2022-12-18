@@ -24,12 +24,81 @@ suppressMessages(library(lme4))
 suppressMessages(library(readr))
 ```
 
+# Part1. Exploretary Data Analysis
 ```{r}
+# Import the data set
 library(readr)
 tortoise <- read_csv("gopher_tortoise.csv", show_col_types = FALSE)
-run_model(tortoise, "tortoise")
 
-para_boot(tortoise, "tortoise", 50)
+# Clean the date set, removed unused column
+tortoise_clean <- tortoise %>%
+  select("Site", "year", "shells", "Area", "prev")
 ```
 
+The first plot shows the relationship between shells and year in original data set, it is grouped by each site.
+```{r}
+# Relationship between shells and year
+tortoise_clean %>%
+  ggplot(aes(x = year, y = shells, fill = Site)) +
+  geom_bar(stat="identity") + 
+  ggtitle("Shells Frequency Plot") +
+  ylab("Number of Shells") +
+  facet_wrap(. ~ Site, ncol=3) +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(legend.position = "none") +
+  scale_y_continuous(breaks=seq(0, 9, 2))
+```
+
+Second plot shows relationship between area and shell. In our model, we consider the effects bring by area.
+
+```{r}
+tortoise_clean %>%
+  ggplot(aes(x = Area, y = shells, fill = Site)) +
+  geom_bar(stat="identity") + 
+  ggtitle("Shells Frequency Plot") +
+  ylab("Number of Shells") +
+  # facet_wrap(. ~ Site, ncol=3) +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(legend.position = "none") +
+  scale_y_continuous(breaks=seq(0, 9, 2))
+```
+
+```{r}
+# Relationship between shells and sites area
+tortoise_clean %>%
+  ggplot(aes(x = Area, y = factor(shells))) +
+  geom_bar(stat = "identity") + 
+  ggtitle("Shells Frequency Plot") +
+  ylab("Number of Shells") +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_y_discrete(breaks=seq(0, 9, 1)) +
+  scale_x_continuous(breaks=seq(0, 400, 50))
+```
+
+```{r}
+tortoise2 <- tortoise_clean %>%
+  mutate(count_per_area = shells/Area)
+```
+
+```{r}
+# Relationship between shells and sites area
+tortoise2 %>%
+  ggplot(aes(x = prev, y = factor(shells))) +
+  geom_bar(stat = "identity") + 
+  ggtitle("Shells Frequency Plot") +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5))
+  #scale_x_continuous(breaks=seq(0, 9, 1)) +
+  #scale_y_continuous(breaks=seq(0, 400, 50))
+```
+
+
+
+```{r}
+run_model(tortoise, "tortoise")
+para_boot(tortoise, "tortoise", 50)
+```
 
