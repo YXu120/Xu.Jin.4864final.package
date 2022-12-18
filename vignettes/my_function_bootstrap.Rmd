@@ -24,10 +24,19 @@ suppressMessages(library(lme4))
 suppressMessages(library(readr))
 ```
 
-# 1. Exploretary Data Analysis
+# 1. Brief Introduction
+In this package, we create functions for fitting one of the generalized linear mixed effects models (GLMMs), the Poisson model, and implement maximum likelihood inference including computing point estimates, standard errors, and confidence intervals. 
 
+A sample data set gopher tortoises (Ozgul et al., 2009) are used here to show how function works.
+
+We first fit a Poisson model with tortoise data set. Then, we use then bootstrap to re-sample data to compute standard deviation and confidence interval. The goal is to test whether increasing in seroprevalence will affect survival of tortoise accounting for the area of each sites. 
+
+This Vignette including Exploratory Data Analysis of original data set, Model Fitting Process, Bootstrap Process and Result Implication.
+
+
+# 2. Exploratory Data Analysis
 ```{r}
-# Import the data set
+# Import the sample data set
 library(readr)
 tortoise <- read_csv("gopher_tortoise.csv", show_col_types = FALSE)
 
@@ -36,7 +45,7 @@ tortoise_clean <- tortoise %>%
   select("Site", "year", "shells", "Area", "prev")
 ```
 
-## 1.1 Relationship between number of shells and year effect
+## 2.1 Relationship between number of shells and year effect
 
 The plot shows the relationship between shells and year in original data set, it is grouped by each site. Each site shows different tendency of shell number in these three years, some increase, while other decrease.
 ```{r}
@@ -55,7 +64,7 @@ tortoise_clean %>%
 
 \newpages
 
-## 1.2 Relationship between number of shells and area of each sites
+## 2.2 Relationship between number of shells and area of each sites
 
 This plot shows relationship between area and shell. As plot shows, increasing in the area will somehow lead to an increase in number of shells. Hence. in the model, to avoid area effects, number of shells is divided by area.
 
@@ -74,7 +83,7 @@ tortoise_clean %>%
 
 \newpages
 
-## 1.3 Relationship between average number of shells and seroprevalence
+## 2.3 Relationship between average number of shells and seroprevalence
 
 The first plot compares the relationship between number of shells and seroprevalence. However, we should consider the effect bring by area of each site.
 
@@ -110,9 +119,9 @@ tortoise2 %>%
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-# Part2. Explanation of model fitting and bootstrap process
+# 3. Explanation of model fitting and bootstrap process
 
-## 2.1 Fitting poisson model
+## 3.1 Fitting poisson model
 In this part, we use function provided by Dr. Simon Bonner to fit a poisson model for this data set. We use number of shells as response variable, with predictors including seroprevalance, area, year and random effect bring by site.
 ```{r}
 suppressMessages(run_model(tortoise, "tortoise"))
@@ -120,13 +129,13 @@ suppressMessages(run_model(tortoise, "tortoise"))
 
 Summary of model shows that this data set has no random effects with 0 random effects variance.
 
-## 2.1 Bootstrap and refitting 
+## 3.2 Bootstrap and refitting 
 ```{r}
 
 ```
 
 
-# Part3. Explanation of summary output
+# 4. Explanation of summary output
 ```{r}
 
 ```
