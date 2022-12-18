@@ -122,7 +122,10 @@ tortoise2 %>%
 # 3. Explanation of model fitting and bootstrap process
 
 ## 3.1 Fitting poisson model
-In this part, we use function provided by Dr. Simon Bonner to fit a poisson model for this data set. We use number of shells as response variable, with predictors including seroprevalance, area, year and random effect bring by site.
+In this part, we use the function "run_model" provided by Dr. Simon Bonner to fit a poisson model for this data set. We use number of shells as response variable, with predictors including seroprevalance, area, year and random effect bring by site.
+
+To use this function, the first parameter is the data set, and the second means example we use. Note that this function currently only can fit with four example data sets, 2 of poisson model and 2 of binomial model.
+
 ```{r}
 suppressMessages(run_model(tortoise, "tortoise"))
 ```
@@ -130,13 +133,28 @@ suppressMessages(run_model(tortoise, "tortoise"))
 Summary of model shows that this data set has no random effects with 0 random effects variance.
 
 ## 3.2 Bootstrap and refitting 
-```{r}
 
+Bootstrap process is implementing by the function "para_boot". To make this function run successfully, we need three parameters. Similar to "run_model", the fit parameter is the name of data set and second is name of example. In our sample data set, the second parameter is "tortoise". The third parameter is number of bootstrap we want to run, in other word, the sample size of bootstrap.
+
+By running this function, the result will be a table containing value of point estimation, re-sampled $\beta_1$ value, standard deviation, 95%CI and p value of $\beta_1$.
+
+Here, we run the bootstrap function with sample size 30 as an example.
+```{r}
+suppressMessages(para_boot(tortoise, "tortoise", 30))
+```
+
+# 4. Explanation of Summary Output
+```{r}
+std <- c()
+index <- seq(from = 10, to = 300, by = 10)
+for (i in index){
+  std <- c(std, para_boot(tortoise, "tortoise", i)[[3]])
+}
+
+sd_plot <- data.frame(B = index, Standard_deviation = std) %>%
+  ggplot() + geom_line(aes(x = B, y = Standard_deviation), linewidth = 0.8) + ggtitle("Plot of standard deviation for bootstrap samples vs different value of B") + theme_bw()
+sd_plot
 ```
 
 
-# 4. Explanation of summary output
-```{r}
-
-```
 
