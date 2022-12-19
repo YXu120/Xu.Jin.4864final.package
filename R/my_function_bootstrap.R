@@ -62,8 +62,7 @@ para_boot <- function(data, example, B){
   beta_btsp <- tibble(t = 1:B) %>%
     group_by(t) %>%
     summarize(mod_sum = suppressMessages(run_model(Y_btsp$data[[t]], example)), .groups = "keep") %>%
-    summarize(beta_1_star = mod_sum[[1]][[2]],
-              .groups = "drop")
+    summarize(beta_1_star = mod_sum[[1]][[2]], .groups = "drop")
 
   # Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
@@ -88,8 +87,7 @@ para_boot <- function(data, example, B){
   beta_btsp_test <- tibble(t = 1:B) %>%
     group_by(t) %>%
     summarize(mod_sum = suppressMessages(run_model(Y_btsp_test$data[[t]], example)), .groups = "keep") %>%
-    summarize(beta_1_star = mod_sum[[1]][[2]],
-              test_statistic = mod_sum[[4]][[2]], .groups = "drop")
+    summarize(test_statistic = mod_sum[[4]][[2]], .groups = "drop")
 
   # Compute p-value
   p <- mean(abs(test_stats) < abs(beta_btsp_test$test_statistic))
