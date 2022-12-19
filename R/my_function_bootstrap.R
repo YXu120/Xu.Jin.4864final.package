@@ -64,7 +64,7 @@ para_boot <- function(data, example, B){
     summarize(mod_sum = suppressMessages(run_model(Y_btsp$data[[t]], example)), .groups = "keep") %>%
     summarize(beta_1_star = mod_sum[[1]][[2]], .groups = "drop")
 
-  # Bootstrap standard deviation
+  # Bootstrap standard error
   beta_sd <- sd(beta_btsp$beta_1_star)
 
   # Bootstrap 95% confidence interval
@@ -99,7 +99,7 @@ para_boot <- function(data, example, B){
   # Summary statistics
   list(point_estimation = beta_1,
        bootstrapped_samples = beta_btsp$beta_1_star,
-       standard_deviation = beta_sd,
+       standard_error = beta_sd,
        `95% confidence interval` = beta_ci,
        p_value = p)
 }
