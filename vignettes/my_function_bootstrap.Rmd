@@ -153,14 +153,14 @@ The last value is p-value of hypothesis test in bootstrap. Here we rerun the boo
 
 Here is the process of picking best value of B, the sample size of bootstrap. We aim to pick a proper value of B and we expect it will converge at some point.
 ```{r}
-std <- data.frame(index = seq(from = 10, to = 300, by = 10)) %>%
+MSE <- data.frame(index = seq(from = 10, to = 300, by = 10)) %>%
   group_by(index) %>%
   summarize(boot_sample = suppressMessages(para_boot(tortoise, "tortoise", index))) %>%
-  mutate(value = (boot_sample[[1]] - boot_sample[[2]])^2 / (index-1) )
+  mutate(value = mean(boot_sample[[2]] - boot_sample[[1]])^2, .groups = "keeps")
 
-sd_plot <- data.frame(B = std$index, Standard_deviation = std$std_value) %>%
-  ggplot() + geom_line(aes(x = B, y = Standard_deviation), linewidth = 0.8) + ggtitle("Plot of standard deviation for bootstrap samples vs different value of B") + theme_bw()
-sd_plot
+MSE_plot <- data.frame(B = MSE$index, MSE = MSE$value) %>%
+  ggplot() + geom_line(aes(x = B, y = MSE), linewidth = 0.8) + ggtitle("Plot of MSE for bootstrap samples vs different value of B") + theme_bw()
+MSE_plot
 ```
 
 
