@@ -149,7 +149,7 @@ std <- data.frame(index = seq(from = 10, to = 300, by = 10)) %>%
   group_by(index) %>%
   mutate(std_value = suppressMessages(para_boot(tortoise, "tortoise", index)[[3]]))
 
-sd_plot <- data.frame(B = index, Standard_deviation = std) %>%
+sd_plot <- data.frame(B = std$index, Standard_deviation = std$std_value) %>%
   ggplot() + geom_line(aes(x = B, y = Standard_deviation), linewidth = 0.8) + ggtitle("Plot of standard deviation for bootstrap samples vs different value of B") + theme_bw()
 sd_plot
 ```
