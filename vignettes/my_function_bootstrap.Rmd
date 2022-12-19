@@ -144,10 +144,19 @@ suppressMessages(para_boot(tortoise, "tortoise", 30))
 ```
 
 # 4. Explanation of Summary Output
+
+From previous running output, the first value is the point estimate of $\beta_1$ after fitting the model. This is the original value of $\beta_1$ that we obtain before doing bootstrap to refit the model. The second group of value is the $\beta_1^*$ we obtain after refitting model with new generated random effects. A clear observation here is, all these $\beta_1^*$ are around the original point estimate, some above it, some below it, but still value close. This phenomenon also can be viewed from very small standard error, which is the third value. It means these data do not cause value of $\beta_1$ fluctuating a lot. The forth part of output is our 95% confidence interval. 
+
+The last value is p-value of hypothesis test in bootstrap. Here we rerun the bootstrap at the condition that $\beta_1$ is equal to 0, because we need to approximate the sampling distribution under the null hypothesis, so this is different from what we compute standard error and confidence interval. This result shows that our p-value is very small, which means we have evidence to reject our null hypothesis, where null hypothesis is $H_0: \beta_1 = 0$. Since it is rejected, then we know that the impact of seroprevalance to number of shells is significant, we conclude that increasing in seroprevalance will affect number of shells.
+
+
+
+Here is the process of picking best value of B, the sample size of bootstrap. We aim to pick a proper value of B and we expect it will converge at some point.
 ```{r}
 std <- data.frame(index = seq(from = 10, to = 300, by = 10)) %>%
   group_by(index) %>%
-  mutate(std_value = suppressMessages(para_boot(tortoise, "tortoise", index)[[3]]))
+  summarize(boot_sample = suppressMessages(para_boot(tortoise, "tortoise", index))) %>%
+  mutate(value = (boot_sample[[1]] - boot_sample[[2]])^2 / (index-1) )
 
 sd_plot <- data.frame(B = std$index, Standard_deviation = std$std_value) %>%
   ggplot() + geom_line(aes(x = B, y = Standard_deviation), linewidth = 0.8) + ggtitle("Plot of standard deviation for bootstrap samples vs different value of B") + theme_bw()
