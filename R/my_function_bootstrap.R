@@ -10,6 +10,7 @@
 #' @examples
 #' ##### Tortoise #####
 #' ## Load data
+#' library(readr)
 #' tortoise <- read_csv("gopher_tortoise.csv")
 #'
 #' ## Choose the desired sample size for bootstrap
