@@ -10,6 +10,7 @@
 #' ##### Epilepsy #####
 #'
 #' ## Load data
+#' library(readr)
 #' epilepsy <- read_csv("epilepsy.csv")
 #'
 #' ## Sum separate observations for each patient in the after period

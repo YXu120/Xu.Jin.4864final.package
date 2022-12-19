@@ -6,11 +6,16 @@
 #'
 #' @return A list with summary statistics including point estimates of coefficients, standard errors, confidence intervals and p-value for hypothesis test.
 #' @export
+#' @importFrom dplyr group_by mutate summarize %>% select nest_by
+#' @importFrom tidyr crossing
+#' @importFrom tibble tibble
+#' @importFrom lme4 glmer lmer ranef
 #'
 #' @examples
 #' ##### Tortoise #####
 #' ## Load data
 #' library(readr)
+#' setwd("/Users/jinruyi/Xu.Jin.4864final.package/R")
 #' tortoise <- read_csv("gopher_tortoise.csv")
 #'
 #' ## Choose the desired sample size for bootstrap

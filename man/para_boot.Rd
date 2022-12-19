@@ -23,6 +23,7 @@ Final Project Parametric Bootstrap
 ##### Tortoise #####
 ## Load data
 library(readr)
+setwd("/Users/jinruyi/Xu.Jin.4864final.package/R")
 tortoise <- read_csv("gopher_tortoise.csv")
 
 ## Choose the desired sample size for bootstrap
