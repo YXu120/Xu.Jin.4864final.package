@@ -23,25 +23,3 @@ use_r("my_function_bootstrap.R")
 # Create vignette
 use_vignette("my_function_bootstrap")
 ```
-
-# Experiment
-```{r}
-library(tidyverse)
-library(lme4)
-library(readr)
-tortoise <- read_csv("gopher_tortoise.csv", show_col_types = FALSE)
-
-run_model(tortoise, "tortoise")
-para_boot(tortoise, "tortoise", 30)
-
-std <- c()
-index <- seq(from = 10, to = 300, by = 10)
-for (i in index){
-  std <- c(std, para_boot(tortoise, "tortoise", i)[[3]])
-}
-
-sd_plot <- data.frame(B = index, Standard_deviation = std) %>%
-  ggplot() + geom_line(aes(x = B, y = Standard_deviation), linewidth = 0.8) + ggtitle("Plot of standard deviation for bootstrap samples vs different value of B") + theme_bw()
-sd_plot
-```
-
