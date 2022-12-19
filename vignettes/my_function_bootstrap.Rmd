@@ -147,7 +147,7 @@ suppressMessages(para_boot(tortoise, "tortoise", 30))
 
 # 4. Explanation of Summary Output
 Here is the process of picking best value of B, the sample size of bootstrap. We aim to pick a proper value of B and we expect it will converge at some point. Here, we pick mean square error (MSE) to test the variation and bias.
-```{r warning=FALSE}
+```{r eval=FALSE, warning=FALSE, include=FALSE}
 # Avoid warning message
 options(dplyr.summarise.inform = FALSE)
 
