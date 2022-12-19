@@ -63,7 +63,7 @@ para_boot <- function(data, example, B){
     group_by(t) %>%
     summarize(mod_sum = suppressMessages(run_model(Y_btsp$data[[t]], example)), .groups = "keep") %>%
     summarize(beta_1_star = mod_sum[[1]][[2]],
-              test_statistic = mod_sum[[4]][[2]], .groups = "drop")
+              .groups = "drop")
 
   # Bootstrap standard deviation
   beta_sd <- sd(beta_btsp$beta_1_star)
